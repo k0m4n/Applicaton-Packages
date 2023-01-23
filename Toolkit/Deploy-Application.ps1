@@ -115,7 +115,7 @@ Try {
     [String]$appRevision = '01'
     [String]$appScriptVersion = '1.0.0'
     [String]$appScriptDate = 'XX/XX/20XX'
-    [String]$appScriptAuthor = '<author name>'
+    [String]$appScriptAuthor = 'k0m4n'
     ##*===============================================
     ## Variables: Install Titles (Only set here to override defaults set by the toolkit)
     [String]$installName = ''
