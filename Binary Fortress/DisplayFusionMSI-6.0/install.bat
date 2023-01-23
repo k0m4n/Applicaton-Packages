@@ -1,0 +1,1 @@
+msiexec /i "onSetup-6.0.msi" TRANSFROMS=".\DisplayFusion-GPO-Deployment.mst" LKEYALL="{REDACTED}" CUSTOM1="/SILENT" LAUNCHAFTER=0 STARTUPALL=1 STARTUPUSER=0 /qb!
