@@ -191,7 +191,7 @@ Try {
         $strZIPTempDownloadPath = "$env:TEMP\autoit-v3-setup.zip"
         $strZIPTempExtractPath = "$env:TEMP\autoit-v3-setup"
         Invoke-WebRequest -uri "https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.zip" -OutFile "$env:TEMP\autoit-v3-setup.zip"
-        Expand-Archive -Path $strZIPTempPath -DestinationPath  $strZIPTempExtractPath 
+        Expand-Archive -Path $strZIPTempDownloadPath -DestinationPath  $strZIPTempExtractPath 
         Invoke-WebRequest -uri "https://www.autoitscript.com/cgi-bin/getfile.pl?../autoit3/scite/download/SciTE4AutoIt3.exe" -OutFile "$env:TEMP\SciTE4AutoIt3.exe"
 
         ##*===============================================
@@ -211,7 +211,7 @@ Try {
 
         ## <Perform Installation tasks here>
         Execute-Process -Path "$strZIPTempExtractPath\autoit-v3-setup.exe" -parameters "/S"
-        Execute-Process -Path "$strZIPTempExtractPath\SciTE4AutoIt3.exe" -parameters "/S"
+        Execute-Process -Path "$env:TEMP\SciTE4AutoIt3.exe" -parameters "/S"
 
         ##*===============================================
         ##* POST-INSTALLATION
