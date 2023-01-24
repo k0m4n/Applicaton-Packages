@@ -1,0 +1,479 @@
+;
+; SLC460.inf - installation file for the Scanner Driver
+;
+; Copyright (C) 2012 Samsung Electronics Co., Ltd. All rights reserved.
+;
+; Manufacturer: Samsung
+;
+
+[Version]
+;LayoutFile=Layout.inf
+Signature="$Windows NT$"
+Class=Image
+ClassGUID={6bdd1fc6-810f-11d0-bec7-08002be2092f}
+Provider=%COMPANY_NAME%
+DriverVer=04/10/2015,1.8.3.0
+CatalogFile=SLC460.cat
+
+[Manufacturer]
+%COMPANY_NAME%=Models,NT.5,NT.6,NTAMD64.5.2,NTAMD64.6
+
+;=================== Class Sections ===========================
+[Models] 
+%Model% = Scanner.Scan, USB\Vid_04E8&Pid_3468&MI_00
+
+[Models.NT.5]
+%Model% = Scanner.ScanWithWIA, USB\Vid_04E8&Pid_3468&MI_00
+
+[Models.NT.6]
+%Model% = Scanner.ScanWithWIAVISTA, USB\Vid_04e8&Pid_3468&MI_00
+
+[Models.NTAMD64.5.2]
+%Model% = Scanner.ScanWithWIA64, USB\Vid_04E8&Pid_3468&MI_00
+
+[Models.NTAMD64.6]
+%Model% = Scanner.ScanWithWIAVISTA64, USB\Vid_04e8&Pid_3468&MI_00
+
+; Windows 2000
+[Scanner.Scan]
+Include= sti.inf
+Needs= STI.USBSection
+SubClass=StillImage
+DeviceType=1
+DeviceSubType=0x1
+Capabilities=0x31
+AddReg=SharedFiles2K.AddReg, TWAINRegInfo32.AddReg, SamsungPrinterLiveUpdate32.AddReg
+CopyFiles=TWAIN_FILES,SHARE32_FILES,ICM_FILES,SCANCDLM_FILES
+ICMProfiles="sRGB Color Space Profile.icm"
+
+[SharedFiles2K.AddReg]
+HKLM,"SOFTWARE\%COMPANY_NAME%\INF Scanner Installer\%Model%","Shared",0x00000000,%SHARED_2K_FILES%
+
+[Scanner.Scan.Services]
+Include=sti.inf
+Needs=STI.UsbSection.Services
+
+; Windows XP and 2003
+[Scanner.ScanWithWIA.NT]
+Include= sti.inf
+Needs= STI.USBSection
+SubClass=StillImage
+DeviceType=1
+PortSelect = No
+DeviceSubType=0x1
+Capabilities=0x31
+DeviceData=WIAScanXPCommon.DeviceData
+AddReg=WIAScanXPCommon.AddReg, SharedFilesXP32.AddReg, TWAINRegInfo32.AddReg, SamsungPrinterLiveUpdate32.AddReg
+RegisterDlls=WIAScanXPCommon.RegisterDlls
+CopyFiles=TWAIN_FILES,WIAXP_FILES,WIAXPMUI32_FILES,SHARE32_FILES,ICM_FILES,SCANCDLM_FILES		; USB Only
+ICMProfiles="sRGB Color Space Profile.icm"
+
+[Scanner.ScanWithWIA.NT.Services]
+Include=sti.inf
+Needs=STI.UsbSection.Services
+
+[Scanner.ScanWithWIA64.NT]
+Include= sti.inf
+Needs= STI.USBSection
+SubClass=StillImage
+DeviceType=1
+PortSelect = No
+DeviceSubType=0x1
+Capabilities=0x31
+DeviceData=WIAScanXPCommon.DeviceData
+AddReg=WIAScanXPCommon.AddReg, SharedFilesXP64.AddReg, TWAINRegInfo64.AddReg, SamsungPrinterLiveUpdate64.AddReg
+RegisterDlls=WIAScanXPCommon.RegisterDlls
+CopyFiles=TWAIN_FILES,WIAXP_FILES,WIAXPMUI64_FILES,SHARE64_FILES,SHARESYS_FILES,SHARE32FOR64_FILES,ICM_FILES,SCANCDLM_FILES    ;USB Only
+ICMProfiles="sRGB Color Space Profile.icm"
+
+[Scanner.ScanWithWIA64.NT.Services]
+Include=sti.inf
+Needs=STI.UsbSection.Services
+
+[WIAScanXPCommon.DeviceData]
+Server=local
+UI DLL=sti.dll
+UI Class ID={C31877E6-4140-4261-BA96-72326FCDBA8C}
+TwainDS=%Model%
+
+[WIAScanXPCommon.RegisterDlls]
+11,,SaXPUIEx.dll,1	; Register UI extension
+
+[WIAScanXPCommon.AddReg]
+;HKR,,HardwareConfig,1,1
+HKR,,HardwareConfig,1,4 ; USB Device
+HKR,,USDClass,,"{57575C28-05E9-4a14-8937-5C12E59C6DA3}"
+HKR,DeviceData,DeviceMonitor,0x00010001,1 
+HKR,DeviceData,DeviceBWThreshold,0x00010001,1
+HKR,DeviceData,ADFOnePage,0x00010001,1
+HKR,DeviceData,Vid,0x00010001,0x04e8 
+HKR,DeviceData,Pid,0x00010001,0x3468
+HKR,DeviceData,ScannerProfile,0x00000000,"Samsung C460 Series.icc"
+HKCR,CLSID\{57575C28-05E9-4a14-8937-5C12E59C6DA3},,,%Model%
+HKCR,CLSID\{57575C28-05E9-4a14-8937-5C12E59C6DA3}\InProcServer32,,,%11%\SaXPWIA.dll
+HKCR,CLSID\{57575C28-05E9-4a14-8937-5C12E59C6DA3}\InProcServer32,ThreadingModel,,Both
+
+; Windows VISTA or higher
+[Scanner.ScanWithWIAVISTA.NT]
+Include= sti.inf
+Needs= STI.USBSection
+SubClass=StillImage
+DeviceType=1
+PortSelect = No
+DeviceSubType=0x1
+Capabilities=0x31
+DeviceData=WIAScanVISTACommon.DeviceData
+AddReg=WIAScanVISTACommon.AddReg, SharedFilesVISTA32.AddReg, TWAINRegInfo32.AddReg, SamsungPrinterLiveUpdate32.AddReg
+RegisterDlls=WIAScanVISTACommon.RegisterDlls
+CopyFiles=TWAIN_FILES,WIAVISTA_FILES,SHARE32_FILES,SHARESYS_FILES,ICM_FILES,SCANCDLM_FILES		; USB Only
+ICMProfiles="sRGB Color Space Profile.icm"
+
+[Scanner.ScanWithWIAVISTA.NT.Services]
+Include=sti.inf
+Needs=STI.UsbSection.Services
+
+[Scanner.ScanWithWIAVISTA64.NT]
+Include= sti.inf
+Needs= STI.USBSection
+SubClass=StillImage
+DeviceType=1
+PortSelect = No
+DeviceSubType=0x1
+Capabilities=0x31
+DeviceData=WIAScanVISTACommon.DeviceData
+AddReg=WIAScanVISTACommon.AddReg, SharedFilesVISTA64.AddReg, TWAINRegInfo64.AddReg, SamsungPrinterLiveUpdate64.AddReg
+RegisterDlls=WIAScanVISTACommon.RegisterDlls
+CopyFiles=TWAIN_FILES,WIAVISTA_FILES,SHARE64_FILES,SHARESYS_FILES,SHARE32FOR64_FILES,ICM_FILES,SCANCDLM_FILES    ;USB Only
+ICMProfiles="sRGB Color Space Profile.icm"
+
+[Scanner.ScanWithWIAVISTA64.NT.Services]
+Include=sti.inf
+Needs=STI.UsbSection.Services
+
+[WIAScanVISTACommon.DeviceData]
+Server=local
+UI DLL=sti.dll
+UI Class ID={D2E517BF-5912-4778-85E9-321E05C8701D}
+TwainDS=%Model%
+
+[WIAScanVISTACommon.RegisterDlls]
+;11,,ssuiext.dll,1	; Register UI extension
+
+[WIAScanVISTACommon.AddReg]
+;HKR,,HardwareConfig,1,1
+HKR,,HardwareConfig,1,4 ; USB Device
+HKR,DeviceData,DeviceMonitor,0x00010001,1 
+HKR,DeviceData,DeviceBWThreshold,0x00010001,1
+HKR,DeviceData,ADFOnePage,0x00010001,1
+HKR,DeviceData,Vid,0x00010001,0x04e8 
+HKR,DeviceData,Pid,0x00010001,0x3468
+HKR,DeviceData,ScannerProfile,0x00000000,"Samsung C460 Series.icc"
+; Register Com
+HKR,,USDClass,,"{CEF6CF6E-20D2-4028-B627-42ADC0B5B95E}"
+HKCR,CLSID\{CEF6CF6E-20D2-4028-B627-42ADC0B5B95E},,,%Model%
+HKCR,CLSID\{CEF6CF6E-20D2-4028-B627-42ADC0B5B95E}\InProcServer32,,,%11%\SaMinDrv.dll
+HKCR,CLSID\{CEF6CF6E-20D2-4028-B627-42ADC0B5B95E}\InProcServer32,ThreadingModel,,"Both"
+
+;HKCR,CLSID\{AD835360-71BC-4851-B44A-BF2A9ACB8E78},,,"WIA Segmentation Filter"
+;HKCR,CLSID\{AD835360-71BC-4851-B44A-BF2A9ACB8E78}\InProcServer32,,,%11%\SaSegFlt.dll
+;HKCR,CLSID\{AD835360-71BC-4851-B44A-BF2A9ACB8E78}\InProcServer32,ThreadingModel,,"Both"
+
+HKCR,CLSID\{5E074503-FD13-4133-952D-5BDF93C2FE52},,,"WIA Image Processing Filter"
+HKCR,CLSID\{5E074503-FD13-4133-952D-5BDF93C2FE52}\InProcServer32,,,%11%\SaImgFlt.dll
+HKCR,CLSID\{5E074503-FD13-4133-952D-5BDF93C2FE52}\InProcServer32,ThreadingModel,,"Both"
+
+HKCR,CLSID\{51E137D2-CDB2-4277-B21D-C8B580B64270},,,"WIA Error Handler"
+HKCR,CLSID\{51E137D2-CDB2-4277-B21D-C8B580B64270}\InProcServer32,,,%11%\SaErHdlr.dll
+HKCR,CLSID\{51E137D2-CDB2-4277-B21D-C8B580B64270}\InProcServer32,ThreadingModel,,"Both"
+
+;HKCR,CLSID\{B2F1E222-7862-4dfc-BD38-80707C09AED2},,,"WIA Dialog Extension Handler"
+;HKCR,CLSID\{B2F1E222-7862-4dfc-BD38-80707C09AED2}\InProcServer32,,,%11%\ssuiextension2.dll
+;HKCR,CLSID\{B2F1E222-7862-4dfc-BD38-80707C09AED2}\InProcServer32,ThreadingModel,,"Both"
+
+HKCR,CLSID\{D2E517BF-5912-4778-85E9-321E05C8701D},,,"WIA Driver UI Extension"
+;HKCR,CLSID\{D2E517BF-5912-4778-85E9-321E05C8701D}\shellex\SegmentationFilter\{AD835360-71BC-4851-B44A-BF2A9ACB8E78},,,""
+HKCR,CLSID\{D2E517BF-5912-4778-85E9-321E05C8701D}\shellex\ImageProcessingFilter\{5E074503-FD13-4133-952D-5BDF93C2FE52},,,""
+HKCR,CLSID\{D2E517BF-5912-4778-85E9-321E05C8701D}\shellex\ErrorHandler\{51E137D2-CDB2-4277-B21D-C8B580B64270},,,""
+;HKCR,CLSID\{BC7A1623-6F79-4159-82D7-A405033F2F76}\shellex\WiaDialogExtensionHandlers\{B2F1E222-7862-4dfc-BD38-80707C09AED2}
+
+[SharedFilesXP32.AddReg]
+HKLM,"SOFTWARE\%COMPANY_NAME%\INF Scanner Installer\%Model%","Shared",0x00000000,%SHARED_XP_FILES%
+
+[SharedFilesXP64.AddReg]
+HKLM,"SOFTWARE\%COMPANY_NAME%\INF Scanner Installer\%Model%","Shared",0x00000000,%SHARED_XP64_FILES%
+
+[SharedFilesVISTA32.AddReg]
+HKLM,"SOFTWARE\%COMPANY_NAME%\INF Scanner Installer\%Model%","Shared",0x00000000,%SHARED_VISTA_FILES%
+
+[SharedFilesVISTA64.AddReg]
+HKLM,"SOFTWARE\%COMPANY_NAME%\INF Scanner Installer\%Model%","Shared",0x00000000,%SHARED_VISTA64_FILES%
+
+[TWAINRegInfo32.AddReg]
+HKLM,"SOFTWARE\SSScan\%Model%","TwainLocation",0x00000000,"%10%\Twain_32\%COMPANY_NAME%\%FOLDER_NAME%"
+HKCU,"SOFTWARE\SSScan\%Model%","TwainLocation",0x00000000,"%10%\Twain_32\%COMPANY_NAME%\%FOLDER_NAME%"
+HKLM,"SOFTWARE\SSScan\%Model%","ConnectionType",0x00010003,0
+
+[TWAINRegInfo64.AddReg]
+HKLM,"SOFTWARE\SSScan\%Model%","TwainLocation",0x00004000,"%10%\Twain_32\%COMPANY_NAME%\%FOLDER_NAME%"
+HKCU,"SOFTWARE\SSScan\%Model%","TwainLocation",0x00001000,"%10%\Twain_32\%COMPANY_NAME%\%FOLDER_NAME%"
+HKLM,"SOFTWARE\SSScan\%Model%","ConnectionType",0x00014003,0
+
+[SamsungPrinterLiveUpdate32.AddReg]
+HKLM,"SOFTWARE\%COMPANY_NAME%\SamsungPrinterLiveUpdate\SW\%Model%","TWAIN",0x00000000,%TWAIN_RELEASE_VERSION%
+HKLM,"SOFTWARE\%COMPANY_NAME%\SamsungPrinterLiveUpdate\SW\%Model%","WIA",0x00000000,%WIA_RELEASE_VERSION%
+
+[SamsungPrinterLiveUpdate64.AddReg]
+HKLM,"SOFTWARE\%COMPANY_NAME%\SamsungPrinterLiveUpdate\SW\%Model%","TWAIN",0x00004000,%TWAIN_RELEASE_VERSION%
+HKLM,"SOFTWARE\%COMPANY_NAME%\SamsungPrinterLiveUpdate\SW\%Model%","WIA",0x00004000,%WIA_RELEASE_VERSION%
+
+;=================== ControlFlags ===========================
+[ControlFlags]
+; Remove comment from this line if all devices are PnP.
+ExcludeFromSelect=*
+
+;=================== DestinationDirs ===========================
+[DestinationDirs]
+DefaultDestDir=11
+TWAIN_FILES = 10,Twain_32\%COMPANY_NAME%\%FOLDER_NAME%
+WIAXP_FILES = 11
+
+WIAVISTA_FILES = 11
+
+WIAXPMUI32_FILES = 11
+WIAXPMUI64_FILES = 11
+
+SHARE32_FILES = 11
+SHARE32FOR64_FILES = 10,SysWOW64
+SHARE64_FILES = 11
+SHARESYS_FILES = 12
+
+ICM_FILES = 23
+SCANCDLM_FILES = 10,Twain_32\%COMPANY_NAME%\%FOLDER_NAME%\ScanCDLM
+
+;=================== CopyFiles ===========================
+[ICM_FILES]
+Samsung C460 Series.icc
+Samsung C460 Series1.icc
+
+[TWAIN_FILES]
+OEMUI.ver
+Presets.ini
+Defaults.ini
+OEMDS2.DS,,,0x60      ; Do not overwrite if target is newer
+OEMDS2.dll,,,0x60      ; Do not overwrite if target is newer
+OEMIMG2.dll,,,0x60      ; Do not overwrite if target is newer
+OEMUI2.dll,,,0x60      ; Do not overwrite if target is newer
+oemui.chm
+OEMUI.dat
+ssMUIDLL.dll,,,0x60      ; Do not overwrite if target is newer
+OEMUI.ipb
+oemuicp.chm
+OEMUIcp.dat
+oemuict.chm
+OEMUIct.dat
+oemuicz.chm
+OEMUIcz.dat
+oemuidn.chm
+OEMUIdn.dat
+oemuidt.chm
+OEMUIdt.dat
+oemuifi.chm
+OEMUIfi.dat
+oemuifn.chm
+OEMUIfn.dat
+oemuigr.chm
+OEMUIgr.dat
+oemuihu.chm
+OEMUIhu.dat
+oemuiit.chm
+OEMUIit.dat
+oemuijp.chm
+OEMUIjp.dat
+oemuikr.chm
+OEMUIkr.dat
+oemuinr.chm
+OEMUInr.dat
+oemuipo.chm
+OEMUIpo.dat
+oemuipt.chm
+OEMUIpt.dat
+oemuiru.chm
+OEMUIru.dat
+oemuisp.chm
+OEMUIsp.dat
+oemuisw.chm
+OEMUIsw.dat
+oemuitk.chm
+OEMUItk.dat
+oemuiab.chm
+OEMUIab.dat
+oemuibp.chm
+OEMUIbp.dat
+oemuiel.chm
+OEMUIel.dat
+oemuihb.chm
+OEMUIhb.dat
+oemuiuk.chm
+OEMUIuk.dat
+
+[SCANCDLM_FILES]
+DevSearchDlg.dll,,,0x60      ; Do not overwrite if target is newer 
+DscPnt.dll,,,0x60      ; Do not overwrite if target is newer 
+ScanCDLM.exe,,,0x60      ; Do not overwrite if target is newer 
+ScanCDLM.ini
+ssMUIDLL.dll,,,0x60      ; Do not overwrite if target is newer
+
+[WIAXP_FILES]
+SaXPWIA.dll,,,0x60      ; Do not overwrite if target is newer
+SaXPUIEx.dll,,,0x60     ; Do not overwrite if target is newer
+SaWIASTR.loc,,,0x60     ; Do not overwrite if target is newer
+
+[WIAVISTA_FILES]
+SaMinDrv.dll,,,0x60      ; Do not overwrite if target is newer
+SaImgFlt.dll,,,0x60      ; Do not overwrite if target is newer
+SaErHdlr.dll,,,0x60      ; Do not overwrite if target is newer
+;SaSegFlt.dll,,,0x60      ; Do not overwrite if target is newer
+
+[SHARE32_FILES]
+Ssdevm.dll,,,0x10	        ;Do not overwrite
+Ssusbpn.dll,,,0x10	;Do not overwrite
+
+[SHARESYS_FILES]
+SSPORT.sys,,,0x10	;Do not overwrite
+
+[SHARE32FOR64_FILES]
+Ssdevm.dll,,,0x10   	;Do not overwrite
+Ssusbpn.dll,,,0x10	;Do not overwrite
+
+[SHARE64_FILES]
+Ssdevm64.dll,,,0x10	;Do not overwrite
+Ssusbp64.dll,,,0x10	;Do not overwrite
+
+[WIAXPMUI32_FILES]
+SaWIAMUI.dll,ssMUIDLL.dll,,0x60     ; Do not overwrite if target is newer 
+
+[WIAXPMUI64_FILES]
+SaWIAMUI.dll,ssMUID64.dll,,0x60      ; Do not overwrite if target is newer 
+
+;=================== SourceDisksNames ===========================
+[SourceDisksNames]
+1=%COMPANY_NAME%,TWAINDrv.cab,,\common\TWAINDrv
+2=%COMPANY_NAME%,ScanCDLM.cab,,\common\ScanCDLM
+3=%COMPANY_NAME%,,,\common\Profiles
+7=%COMPANY_NAME%,,,\common\TWAINDrv
+
+[SourceDisksNames.x86]
+4=%COMPANY_NAME%,WIADrv.cab,,\i386
+5=%COMPANY_NAME%,,,\i386
+
+[SourceDisksNames.amd64]
+4=%COMPANY_NAME%,WIADrv.cab,,\amd64
+5=%COMPANY_NAME%,,,\amd64
+6=%COMPANY_NAME%,,,\amd64
+
+
+;=================== SourceDisksNames ===========================
+[SourceDisksFiles]
+OEMUI.ver = 1
+Presets.ini = 1
+Defaults.ini = 1
+OEMDS2.DS = 1
+OEMDS2.dll = 1
+OEMIMG2.dll = 1
+oemui.chm = 1
+OEMUI.dat = 1
+OEMUI2.dll = 1
+OEMUI.ipb = 1
+oemuicp.chm = 1
+OEMUIcp.dat = 1
+oemuict.chm = 1
+OEMUIct.dat = 1
+oemuicz.chm = 1
+OEMUIcz.dat = 1
+oemuidn.chm = 1
+OEMUIdn.dat = 1
+oemuidt.chm = 1
+OEMUIdt.dat = 1
+oemuifi.chm = 1
+OEMUIfi.dat = 1
+oemuifn.chm = 1
+OEMUIfn.dat = 1
+oemuigr.chm = 1
+OEMUIgr.dat = 1
+oemuihu.chm = 1
+OEMUIhu.dat = 1
+oemuiit.chm = 1
+OEMUIit.dat = 1
+oemuijp.chm = 1
+OEMUIjp.dat = 1
+oemuikr.chm = 1
+OEMUIkr.dat = 1
+oemuinr.chm = 1
+OEMUInr.dat = 1
+oemuipo.chm = 1
+OEMUIpo.dat = 1
+oemuipt.chm = 1
+OEMUIpt.dat = 1
+oemuiru.chm = 1
+OEMUIru.dat = 1
+oemuisp.chm = 1
+OEMUIsp.dat = 1
+oemuisw.chm = 1
+OEMUIsw.dat = 1
+oemuitk.chm = 1
+OEMUItk.dat = 1
+oemuiab.chm = 1
+OEMUIab.dat = 1
+oemuibp.chm = 1
+OEMUIbp.dat = 1
+oemuiel.chm = 1
+OEMUIel.dat = 1
+oemuihb.chm = 1
+OEMUIhb.dat = 1
+oemuiuk.chm = 1
+OEMUIuk.dat = 1
+
+;== Scan CDLM Files ==================================================
+DevSearchDlg.dll = 2
+DscPnt.dll = 2
+ScanCDLM.exe = 2
+ScanCDLM.ini = 2
+
+;= WIA Files ===================================================
+SaXPWIA.dll = 4	        ;WIA XP Files
+SaXPUIEx.dll = 4	;WIA XP Files
+SaWIASTR.loc = 4	;WIA XP Files
+
+SaMinDrv.dll = 4    	;VISTA WIA Filse
+SaImgFlt.dll = 4     	;VISTA WIA Filse
+SaErHdlr.dll = 4    	;VISTA WIA Filse
+;SaSegFlt.dll = 4     	;VISTA WIA Filse
+Ssdevm.dll = 5		;Common Files
+Ssusbpn.dll = 5		;Common Files
+SSPORT.sys = 5		;Common Files for 32bits
+
+Ssdevm64.dll = 6	;Common Files for 64bits
+Ssusbp64.dll = 6	;Common Files for 64bits
+
+;= MUI Files =================================================== 
+ssMUIDll.dll = 5
+ssMUID64.dll = 6
+
+;= CMS Files ===================================================
+Samsung C460 Series.icc = 3
+Samsung C460 Series1.icc = 3
+
+; =================== Strings =========================
+[Strings]
+WIA_RELEASE_VERSION="1.83.00"
+TWAIN_RELEASE_VERSION="3.31.37:03"
+
+SHARED_2K_FILES = "SSDEVM.DLL,SSUSBPN.DLL"
+SHARED_XP_FILES = "SSDEVM.DLL,SSUSBPN.DLL,SaXPWIA.dll,SaXPUIEx.dll,SaWIAMUI.dll,SaWIASTR.loc"
+SHARED_VISTA_FILES = "SSDEVM.DLL,SSUSBPN.DLL,SSPORT.sys,SaMinDrv.dll,SaImgFlt.dll,SaErHdlr.dll"
+SHARED_XP64_FILES = "SSDEVM64.DLL,SSDEVM.DLL,ssusbpn64.dll,SSUSBPN.DLL,ssusbp64.dll,SSPORT.sys,SaXPWIA.dll,SaXPUIEx.dll,SaWIAMUI.dll,SaWIASTR.loc"
+SHARED_VISTA64_FILES = "SSDEVM64.DLL,SSDEVM.DLL,ssusbpn64.dll,SSUSBPN.DLL,ssusbp64.dll,SSPORT.sys,SaMinDrv.dll,SaImgFlt.dll,SaErHdlr.dll"
+
+COMPANY_NAME = "Samsung"
+FOLDER_NAME = "SLC460"
+Model = "Samsung C460 Series"

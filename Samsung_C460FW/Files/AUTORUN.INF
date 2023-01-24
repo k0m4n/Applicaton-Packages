@@ -1,0 +1,29 @@
+[autorun]
+open = Setup.exe
+ICON = CD.ico
+
+////////////////////////////////////////////////
+//
+// For Windows 9x USB Port Driver and
+//     Windws 9x/2000/XP Vender Setup
+//
+// Installer Version
+////////////////////////////////////////////////
+[INFOMATION]
+VERSION =
+
+MFG_0=Samsung
+MDL_0=C460 Series
+
+DRIVER_NAME_0=Samsung C460 Series
+
+////////////////////////////////////////////////////////////////////////
+// For Windows XP PnP . Set Printer to PCL
+////////////////////////////////////////////////////////////////////////
+[DeviceInstall]
+DriverPath=PRINTER\SPL_PCL
+DriverPath=PRINTER\SPL
+DriverPath=PRINTER\PCL
+DriverPath=Scanner
+
+
